@@ -103,6 +103,9 @@ function renderExpenses() {
 
     // Display the total amount
     totalAmountCell.textContent = totalAmount.toFixed(2);
+
+    // Reset the form and button text after rendering
+    resetForm();
 }
 
 // Function to populate form fields for editing an expense
@@ -117,8 +120,19 @@ function editExpense(id) {
     }
 }
 
-// Event listener to handle form submission
-document.getElementById('add-btn').addEventListener('click', function(event) {
+// Function to reset the form and button text
+function resetForm() {
+    document.getElementById('category-select').value = '';
+    document.getElementById('amount-input').value = '';
+    document.getElementById('date-input').value = '';
+    document.getElementById('expense-id').value = '';
+    document.getElementById('add-btn').textContent = 'Add';
+    document.getElementById('add-btn').removeEventListener('click', updateExpense);
+    document.getElementById('add-btn').addEventListener('click', handleAdd);
+}
+
+// Function to handle the form submission and add/update expense
+function handleAdd(event) {
     event.preventDefault();
     const category = document.getElementById('category-select').value;
     const amount = parseFloat(document.getElementById('amount-input').value);
@@ -128,14 +142,17 @@ document.getElementById('add-btn').addEventListener('click', function(event) {
         const expenseId = document.getElementById('expense-id').value;
         if (expenseId) {
             // Update existing expense
-            expense.id = parseInt(expenseId);
-            updateExpense(expense);
+            const updatedExpense = { id: parseInt(expenseId), ...expense };
+            updateExpense(updatedExpense);
         } else {
             // Add new expense
             addExpense(expense);
         }
     }
-});
+}
+
+// Event listener to handle form submission
+document.getElementById('add-btn').addEventListener('click', handleAdd);
 
 // Initialize by fetching expenses from the server
 fetchExpenses();
