@@ -94,6 +94,7 @@ function renderExpenses() {
         const row = tableBody.insertRow();
         row.innerHTML = `
             <td>${expense.category}</td>
+            <td>${expense.description}</td>
             <td>${expense.amount}</td>
             <td>${expense.date}</td>
             <td><button class="edit-btn" onclick="editExpense(${expense.id})">Edit</button></td>
@@ -113,16 +114,27 @@ function editExpense(id) {
     const expense = expenses.find(expense => expense.id === id);
     if (expense) {
         document.getElementById('category-select').value = expense.category;
+        document.getElementById('description-input').value = expense.description;
         document.getElementById('amount-input').value = expense.amount;
-        document.getElementById('date-input').value = expense.date;
+        document.getElementById('date-input').value = formatDate(expense.date);
         document.getElementById('expense-id').value = expense.id;
         document.getElementById('add-btn').textContent = 'Update';
     }
 }
 
+// Function to format date string to "yyyy-MM-dd" format
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
 // Function to reset the form and button text
 function resetForm() {
     document.getElementById('category-select').value = '';
+    document.getElementById('description-input').value = '';
     document.getElementById('amount-input').value = '';
     document.getElementById('date-input').value = '';
     document.getElementById('expense-id').value = '';
@@ -135,10 +147,11 @@ function resetForm() {
 function handleAdd(event) {
     event.preventDefault();
     const category = document.getElementById('category-select').value;
+    const description = document.getElementById('description-input').value; // Get description value
     const amount = parseFloat(document.getElementById('amount-input').value);
     const date = document.getElementById('date-input').value;
-    if (category && amount && date) {
-        const expense = { category, amount, date };
+    if (category && description && amount && date) {
+        const expense = { category, description, amount, date }; // Include description in the expense object
         const expenseId = document.getElementById('expense-id').value;
         if (expenseId) {
             // Update existing expense
@@ -150,6 +163,7 @@ function handleAdd(event) {
         }
     }
 }
+
 
 // Event listener to handle form submission
 document.getElementById('add-btn').addEventListener('click', handleAdd);

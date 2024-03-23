@@ -1,8 +1,15 @@
+const Sequelize = require('sequelize');
+
 const { DataTypes } = require('sequelize');
+
 const sequelize = require('../util/db');
 
 const Expense = sequelize.define('Expense', {
   category: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  description: {
     type: DataTypes.STRING,
     allowNull: false
   },
