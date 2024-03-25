@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const sequelize = new Sequelize('node-complete', 'root', 'Vishal@888', {
+const sequelize = new Sequelize('expense-tracker', 'root', 'Vishal@888', {
   host: 'localhost',
   dialect: 'mysql',
   // logging: false // Disable logging for cleaner output

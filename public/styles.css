@@ -1,6 +1,9 @@
+/* Global Styles */
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,61 +11,64 @@ body {
 }
 
 .container {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 350px;
-}
-
-.tabs {
-    overflow: hidden;
-}
-
-.tablink {
-    background-color: #f1f1f1;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 10px 15px;
-    margin-right: 5px;
-    border-radius: 8px 8px 0 0;
-}
-
-.tablink:hover {
-    background-color: #ddd;
-}
-
-.tablink.active {
-    background-color: #007BFF;
-    color: white;
-}
-
-.form-container {
-    display: none;
-    padding: 10px;
-}
-
-.form-container h2 {
-    text-align: center;
-}
-
-.form-container label,
-.form-container input {
+    max-width: 400px;
     width: 100%;
-    margin-bottom: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center align the content */
 }
 
-.form-container input[type="submit"] {
+form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px; /* Add margin to the form */
+}
+
+label {
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+button {
+    padding: 10px;
     background-color: #007BFF;
     color: #ffffff;
     border: none;
-    padding: 10px;
+    border-radius: 4px;
     cursor: pointer;
-    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
-.form-container input[type="submit"]:hover {
+button:hover {
     background-color: #0056b3;
+}
+
+.auth-link {
+    margin-top: 10px;
+    display: inline-block;
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #0056b3;
+}
+
+/* Error Message */
+#errorMessage {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
 }
