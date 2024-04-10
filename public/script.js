@@ -1,21 +1,71 @@
 // Define the expenses variable at a global scope
 let expenses = [];
 
+// Function to format date string to "yyyy-MM-dd" format
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// Function to reset the form and button text
+function resetForm() {
+    document.getElementById('category-select').value = '';
+    document.getElementById('description-input').value = '';
+    document.getElementById('amount-input').value = '';
+    document.getElementById('date-input').value = '';
+    document.getElementById('expense-id').value = '';
+    document.getElementById('add-btn').textContent = 'Add';
+    document.getElementById('add-btn').removeEventListener('click', updateExpense);
+    document.getElementById('add-btn').addEventListener('click', handleAdd);
+}
+
+// Function to render expenses in the table and display total amount
+function renderExpenses() {
+    const tableBody = document.getElementById('expense-table-body');
+    const totalAmountCell = document.getElementById('total-amount');
+    let totalAmount = 0;
+
+    tableBody.innerHTML = '';
+    expenses.forEach(expense => {
+        totalAmount += expense.amount;
+        const row = tableBody.insertRow();
+        row.innerHTML = `
+            <td>${expense.category}</td>
+            <td>${expense.description}</td>
+            <td>${expense.amount}</td>
+            <td>${expense.date}</td>
+            <td><button class="edit-btn" onclick="editExpense(${expense.id})">Edit</button></td>
+            <td><button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button></td>
+        `;
+    });
+
+    // Display the total amount
+    totalAmountCell.textContent = totalAmount.toFixed(2);
+
+    // Reset the form and button text after rendering
+    resetForm();
+}
+
 // Function to fetch all expenses from the server
 async function fetchExpenses() {
     try {
         const response = await fetch('/api/expenses');
         if (!response.ok) {
-            throw new Error('Failed to fetch expenses');
+            throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
-        // Assign the fetched data to the expenses variable
+        console.log('Fetch Response:', response);
+        console.log('Fetch Data:', data);
         expenses = data;
         renderExpenses();
     } catch (error) {
         console.error('Error fetching expenses:', error);
     }
 }
+
 
 // Function to add a new expense to the server
 async function addExpense(expense) {
@@ -27,17 +77,22 @@ async function addExpense(expense) {
             },
             body: JSON.stringify(expense),
         });
+
         if (!response.ok) {
-            throw new Error('Failed to add expense');
+            throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
         }
+
         const data = await response.json();
-        // Push the newly added expense to the expenses array
+        console.log('Add Response:', response);
+        console.log('Add Data:', data);
         expenses.push(data);
         renderExpenses();
     } catch (error) {
         console.error('Error adding expense:', error);
+        alert('Failed to add expense. Please try again later.');
     }
 }
+
 
 // Function to update an existing expense on the server
 async function updateExpense(expense) {
@@ -82,33 +137,6 @@ async function deleteExpense(id) {
     }
 }
 
-// Function to render expenses in the table and display total amount
-function renderExpenses() {
-    const tableBody = document.getElementById('expense-table-body');
-    const totalAmountCell = document.getElementById('total-amount');
-    let totalAmount = 0;
-
-    tableBody.innerHTML = '';
-    expenses.forEach(expense => {
-        totalAmount += expense.amount;
-        const row = tableBody.insertRow();
-        row.innerHTML = `
-            <td>${expense.category}</td>
-            <td>${expense.description}</td>
-            <td>${expense.amount}</td>
-            <td>${expense.date}</td>
-            <td><button class="edit-btn" onclick="editExpense(${expense.id})">Edit</button></td>
-            <td><button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button></td>
-        `;
-    });
-
-    // Display the total amount
-    totalAmountCell.textContent = totalAmount.toFixed(2);
-
-    // Reset the form and button text after rendering
-    resetForm();
-}
-
 // Function to populate form fields for editing an expense
 function editExpense(id) {
     const expense = expenses.find(expense => expense.id === id);
@@ -122,48 +150,32 @@ function editExpense(id) {
     }
 }
 
-// Function to format date string to "yyyy-MM-dd" format
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-}
-
-// Function to reset the form and button text
-function resetForm() {
-    document.getElementById('category-select').value = '';
-    document.getElementById('description-input').value = '';
-    document.getElementById('amount-input').value = '';
-    document.getElementById('date-input').value = '';
-    document.getElementById('expense-id').value = '';
-    document.getElementById('add-btn').textContent = 'Add';
-    document.getElementById('add-btn').removeEventListener('click', updateExpense);
-    document.getElementById('add-btn').addEventListener('click', handleAdd);
-}
-
 // Function to handle the form submission and add/update expense
-function handleAdd(event) {
+async function handleAdd(event) {
     event.preventDefault();
     const category = document.getElementById('category-select').value;
-    const description = document.getElementById('description-input').value; // Get description value
+    const description = document.getElementById('description-input').value;
     const amount = parseFloat(document.getElementById('amount-input').value);
     const date = document.getElementById('date-input').value;
-    if (category && description && amount && date) {
-        const expense = { category, description, amount, date }; // Include description in the expense object
-        const expenseId = document.getElementById('expense-id').value;
-        if (expenseId) {
-            // Update existing expense
-            const updatedExpense = { id: parseInt(expenseId), ...expense };
-            updateExpense(updatedExpense);
-        } else {
-            // Add new expense
-            addExpense(expense);
-        }
+    
+    // Validate form data
+    if (!category || !description || !amount || !date) {
+        alert('All fields are required');
+        return;
+    }
+    
+    const expense = { category, description, amount, date };
+    const expenseId = document.getElementById('expense-id').value;
+    
+    if (expenseId) {
+        // Update existing expense
+        const updatedExpense = { id: parseInt(expenseId), ...expense };
+        updateExpense(updatedExpense);
+    } else {
+        // Add new expense
+        addExpense(expense);
     }
 }
-
 
 // Event listener to handle form submission
 document.getElementById('add-btn').addEventListener('click', handleAdd);

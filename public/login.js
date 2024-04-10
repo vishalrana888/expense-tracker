@@ -13,8 +13,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const response = await axios.post('http://localhost:3000/user/login', loginDetails);
 
         if (response.status === 200) {
-            // Redirect to dashboard or home page after successful login
-            window.location.href = "./index.html";
+            // Display success message
+            document.body.innerHTML += `<div style="color:green;">Successfully logged in!</div>`;
         } else {
             throw new Error('Failed to login');
         }
@@ -27,7 +27,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 document.body.innerHTML += `<div style="color:red;">${error.response.data.message}</div>`;
             }
         } else {
-            document.body.innerHTML +=`<div style="color:red;">An error occurred while logging in</div>`;
+            document.body.innerHTML += `<div style="color:red;">An error occurred while logging in</div>`;
         }
     }
 });

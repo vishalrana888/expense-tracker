@@ -1,10 +1,12 @@
 const Sequelize = require('sequelize');
 
-const { DataTypes } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
 const sequelize = require('../util/db');
 
-const Expense = sequelize.define('Expense', {
+class Expense extends Model {}
+
+Expense.init({
   category: {
     type: DataTypes.STRING,
     allowNull: false
@@ -21,6 +23,9 @@ const Expense = sequelize.define('Expense', {
     type: DataTypes.DATEONLY,
     allowNull: false
   }
+}, {
+  sequelize,
+  modelName: 'Expense'
 });
 
 module.exports = Expense;
