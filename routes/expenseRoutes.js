@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Expense = require('../models/expense');
 const expenseController = require('../controllers/expenseController');
 
 router.get('/', expenseController.getData);

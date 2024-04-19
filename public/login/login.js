@@ -13,21 +13,18 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const response = await axios.post('http://localhost:3000/user/login', loginDetails);
 
         if (response.status === 200) {
-            // Display success message
-            document.body.innerHTML += `<div style="color:green;">Successfully logged in!</div>`;
+            // Redirect to dashboard after successful login
+            window.location.href = 'dashboard.html';
         } else {
             throw new Error('Failed to login');
         }
     } catch (error) {
         console.error('Login Error:', error);
+        const errorMessage = document.getElementById('errorMessage');
         if (error.response && error.response.data && error.response.data.message) {
-            if (error.response.data.message.includes('User already exists')) {
-                document.body.innerHTML += `<div style="color:red;">User already exists</div>`;
-            } else {
-                document.body.innerHTML += `<div style="color:red;">${error.response.data.message}</div>`;
-            }
+            errorMessage.textContent = error.response.data.message;
         } else {
-            document.body.innerHTML += `<div style="color:red;">An error occurred while logging in</div>`;
+            errorMessage.textContent = 'An error occurred while logging in';
         }
     }
 });

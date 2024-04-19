@@ -36,9 +36,9 @@ function renderExpenses() {
             <td>${expense.category}</td>
             <td>${expense.description}</td>
             <td>${expense.amount}</td>
-            <td>${expense.date}</td>
+            <td>${formatDate(expense.date)}</td>
             <td><button class="edit-btn" onclick="editExpense(${expense.id})">Edit</button></td>
-            <td><button class="delete-btn" onclick="deleteExpense(${expense.id})">Delete</button></td>
+            <td><button class="delete-btn" onclick="confirmDelete(${expense.id})">Delete</button></td>
         `;
     });
 
@@ -57,15 +57,13 @@ async function fetchExpenses() {
             throw new Error(`Server responded with status: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
-        console.log('Fetch Response:', response);
-        console.log('Fetch Data:', data);
         expenses = data;
         renderExpenses();
     } catch (error) {
         console.error('Error fetching expenses:', error);
+        alert('Failed to fetch expenses. Please try again later.');
     }
 }
-
 
 // Function to add a new expense to the server
 async function addExpense(expense) {
@@ -83,8 +81,6 @@ async function addExpense(expense) {
         }
 
         const data = await response.json();
-        console.log('Add Response:', response);
-        console.log('Add Data:', data);
         expenses.push(data);
         renderExpenses();
     } catch (error) {
@@ -92,7 +88,6 @@ async function addExpense(expense) {
         alert('Failed to add expense. Please try again later.');
     }
 }
-
 
 // Function to update an existing expense on the server
 async function updateExpense(expense) {
@@ -117,6 +112,7 @@ async function updateExpense(expense) {
         }
     } catch (error) {
         console.error('Error updating expense:', error);
+        alert('Failed to update expense. Please try again later.');
     }
 }
 
@@ -134,6 +130,14 @@ async function deleteExpense(id) {
         renderExpenses();
     } catch (error) {
         console.error('Error deleting expense:', error);
+        alert('Failed to delete expense. Please try again later.');
+    }
+}
+
+// Function to confirm deletion of an expense
+function confirmDelete(id) {
+    if (confirm('Are you sure you want to delete this expense?')) {
+        deleteExpense(id);
     }
 }
 
@@ -177,8 +181,15 @@ async function handleAdd(event) {
     }
 }
 
-// Event listener to handle form submission
-document.getElementById('add-btn').addEventListener('click', handleAdd);
-
-// Initialize by fetching expenses from the server
-fetchExpenses();
+// Call fetchExpenses after DOM content is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    fetchExpenses();
+    
+    // Event listener for form submission
+    const addBtn = document.getElementById('add-btn');
+    if (addBtn) {
+        addBtn.addEventListener('click', handleAdd);
+    } else {
+        console.error('Element with id "add-btn" not found');
+    }
+});
