@@ -6,6 +6,10 @@ exports.signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: 'Name, email, and password are required' });
+        }
+
         // Hash the password before saving it to the database
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -26,22 +30,26 @@ exports.signup = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
+        }
+
         const user = await User.findOne({ where: { email } });
 
-        if (user) {
-            // Compare the provided password with the hashed password stored in the database
-            const passwordMatch = await bcrypt.compare(password, user.password);
-            if (passwordMatch) {
-                // Password matches, login successful
-                res.status(200).json({ success: true, message: 'Login successful' });
-            } else {
-                // Incorrect password
-                res.status(401).json({ message: 'Invalid email or password' });
-            }
-        } else {
-            // User not found
-            res.status(404).json({ message: 'User not found' });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
+
+        // Compare the provided password with the hashed password stored in the database
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Invalid email or password' });
+        }
+
+        // Password matches, login successful
+        res.status(200).json({ success: true, message: 'Login successful' });
     } catch (error) {
         console.error('Login Error:', error);
         res.status(500).json({ message: 'Failed to login', error: error.message });

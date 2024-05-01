@@ -61,7 +61,7 @@ async function fetchExpenses() {
         renderExpenses();
     } catch (error) {
         console.error('Error fetching expenses:', error);
-        alert('Failed to fetch expenses. Please try again later.');
+        alert(`Failed to fetch expenses: ${error.message}`);
     }
 }
 
@@ -85,7 +85,7 @@ async function addExpense(expense) {
         renderExpenses();
     } catch (error) {
         console.error('Error adding expense:', error);
-        alert('Failed to add expense. Please try again later.');
+        alert(`Failed to add expense: ${error.message}`);
     }
 }
 

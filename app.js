@@ -1,19 +1,33 @@
-const express = require('express');
+const express = require('express'); 
 const path = require('path');
-const User = require('./models/user');
+const cors = require('cors');
 const bodyParser = require('body-parser');
-const expenseRoutes = require('./routes/expenseRoutes');
+const User = require('./models/user');
+const Expense = require("./models/expense");
+
+const sequelize = require('./util/db');
+
+const expenseRoutes = require('./routes/expenseRoutes'); // Import expenseRoutes
 const userRoutes = require('./routes/userRoutes');
 const bcrypt = require('bcrypt'); // Import bcrypt for password hashing and verification
 
 const app = express();
-const cors = require('cors');
-app.use(cors());
-app.use('/api/expenses', expenseRoutes);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(cors({ origin: 'http://localhost:3000' }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+
+app.use('/api/expenses', expenseRoutes); // Mount expenseRoutes at /api/expenses
 app.use('/user', userRoutes);
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
+User.hasMany(Expense);
+Expense.belongsTo(User);
+
+
+
+
 
 const port = process.env.PORT || 3000;
 

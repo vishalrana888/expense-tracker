@@ -70,5 +70,21 @@ button:hover {
 #errorMessage {
     margin-top: 20px;
     text-align: center;
-    font-weight: bold;
+    font-weight: bold;
+}
+
+/* Logout Button */
+#logoutButton {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #dc3545; /* Red color for logout button */
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#logoutButton:hover {
+    background-color: #c82333; /* Darker red color on hover */
 }
