@@ -1,26 +1,37 @@
 {
   "name": "expense-tracker",
   "version": "1.0.0",
-  "description": "expense tracker",
+  "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js",
-    "start-server": "node app.js"
+    "start": "node app.js",
+    "buildtailwind": "npx tailwindcss build -i public/css/tailwindcss.css -o public/css/style.css",
+    "dev": "npx nodemon app.js"
   },
+  "keywords": [],
   "author": "vishal",
   "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.13",
+    "nodemon": "^2.0.20",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.4"
+  },
   "dependencies": {
-    "axios": "^1.6.7",
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
+    "aws-sdk": "^2.1295.0",
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.1",
     "cors": "^2.8.5",
-    "ejs": "^3.1.9",
-    "express": "^4.18.3",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.9.2",
-    "node": "^21.7.1",
-    "nodemon": "^3.1.0",
-    "sequelize": "^6.37.1"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.1",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "nodemailer": "^6.9.0",
+    "pm2": "^5.2.2",
+    "razorpay": "^2.8.4",
+    "sequelize": "^6.28.0",
+    "uuid": "^9.0.0"
   }
 }

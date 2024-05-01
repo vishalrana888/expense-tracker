@@ -1,56 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Expense Tracker App</title>
+    <link rel="icon" type="image/png" href="../icons8-consumption-96.png">
+    <title>Expense Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;700&family=Kavoon&family=Metal+Mania&family=Poppins:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
-    <div class="input-section">
-        <label for="category-select">Category:</label>
-        <select id="category-select">
-            <option value="Food & Beverage">Food & Beverage</option>
-            <option value="Rent">Rent</option>
-            <option value="Transport">Transport</option>
-            <option value="Relaxing">Relaxing</option>
-            <option value="Skin product">Skin product</option>
-            <option value="Electronic">Electronic</option>
-        </select>
-        <label for="description-input">Description:</label>
-        <input type="text" id="description-input">
-        <label for="amount-input">Amount:</label>
-        <input type="number" id="amount-input">
-        <label for="date-input">Date:</label>
-        <input type="date" id="date-input">
-       
-        <input type="hidden" id="expense-id">
-        <button id="add-btn">Add</button> <!-- Ensure that this button has the correct ID -->
-    </div>
-    
-    <div class="expenses-list">
-        <h2>Expenses List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Category</th>
-                    <th>Description</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody id="expense-table-body"></tbody>
-            <tfoot>
-                <tr>
-                    <td>Total:</td>
-                    <td colspan="5" id="total-amount">0</td>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-    <script src="script.js"></script>
+
+    <section
+        class=" min-w-screen flex flex-col min-h-screen bg-slate-800 text-white bg-center bg-cover bg-blend-overlay bg-fixed bg-black/30"
+        style="background-image: url('./bg.png')">
+        <!-- Navbar -->
+        <div class="flex items-center h-[7rem]">
+            <div class="w-full text-center font-[Kavoon] text-4xl">
+                <span class="">Expense Tracker</span>
+            </div>
+        </div>
+        </div>
+
+        <!-- Hero Section Content -->
+        <div class="flex-1 flex items-center">
+            <div class="text-center mx-auto">
+                <h1 class="text-6xl font-semibold">Welcome to our site!</h1>
+                <p class="font-light text-3xl mt-5">Place to keep your daily Expenses record with add, delete, and
+                    update features . </p>
+                <p class="font-light text-3xl mt-5">We understand your Privacy conerns and anytime availabilty of
+                    records,</p>
+                <p> so we here provide 24*7 availabilty with security.</p>
+                <a class="mr-5 px-5 py-2 inline-block bg-cyan-500 text-white  hover:bg-[#002D74] mt-10 hover:scale-110 duration-300 rounded-sm"
+                    href="./view/login.html">Login</a>
+                <a class="ml-5 px-5 py-2 inline-block bg-cyan-500 text-white hover:bg-[#002D74]  mt-10 hover:scale-110 duration-300 rounded-sm"
+                    href="./view/signup.html">Signup</a>
+            </div>
+        </div>
+    </section>
+
+
+
 </body>
+
 </html>
