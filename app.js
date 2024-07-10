@@ -8,6 +8,7 @@ const bodyParser =require('body-parser')
 const sequelize = require('./utils/database')
 const path = require('path')
 const helmet =require('helmet');
+// var compression = require('compression')
 const morgan = require('morgan');
 
 
@@ -37,6 +38,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(helmet());
+// app.use(compression())
 app.use(morgan('combined',{stream:accessLogstream}))
 
 
